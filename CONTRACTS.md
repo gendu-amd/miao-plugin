@@ -23,6 +23,18 @@
 - 声明:`provides=[gameData]`、`requires=[account, renderer]`、`type=data-provider`、`guoba=true`。
 - 依赖体检(`pluginRegistry.checkRequires`):`account` 由 genshin 满足;`renderer` 待框架实现 → 当前 `checkRequires` 报 `{miao:[renderer]}`(缺失运行时由 `require()→null` 降级)。
 
+### `rank`（群排行 RankProvider） — chapter2/P2（2026-05-31）
+- 实现:`models/rankPort.js`(工厂式包 `models/ProfileRank.js`),注册于 `index.js`。
+- 获取:`const rank = Bot.core.require("rank")`。
+- 方法(均等价 ProfileRank 同名静态/工厂,数据一致):
+  | 方法 | 说明 |
+  |---|---|
+  | `create({group,uid,qq})` | 构造群排行处理器,可 `.getRank(profile, force)` |
+  | `getGroupMaxUidList(groupId,type,game)` | 群内某类型最高 uid 列表 |
+  | `getGroupUidList(groupId,charId,type)` | 群内某角色 uid 列表 |
+  | `getGroupCfg(groupId)` / `resetRank(...)` / `getUserUidMap(e,game)` | 群配置/重置/用户映射 |
+- 范围:**群排行**;全服排名由 ark 等以 `rank.getGlobalRank?` 形式另行 provide(规划)。非侵入。
+
 ## 发布的 Hook 点
 
 ### `profile:beforeRender` — chapter2（2026-05-31）
