@@ -23,5 +23,13 @@
 - 声明:`provides=[gameData]`、`requires=[account, renderer]`、`type=data-provider`、`guoba=true`。
 - 依赖体检(`pluginRegistry.checkRequires`):`account` 由 genshin 满足;`renderer` 待框架实现 → 当前 `checkRequires` 报 `{miao:[renderer]}`(缺失运行时由 `require()→null` 降级)。
 
+## 发布的 Hook 点
+
+### `profile:beforeRender` — chapter2（2026-05-31）
+- 位置:`apps/profile/ProfileDetail.js` 渲染真实点(`Common.render('character/profile-detail', renderData)` 之前)。
+- 触发:`await Bot.core.hook.emitAsync('profile:beforeRender', { e, char, uid, game, mode, renderData })`(异步,等待所有订阅)。
+- 订阅:`Bot.core.hook.on('profile:beforeRender', async p => { /* 就地改写 p.renderData，如注入 p.renderData.globalRank */ })`,返回值调用即退订(可逆)。
+- 用途:供 ark 等**订阅注入**全服排名/评分等,**取代** `#ark替换文件` 覆盖 `ProfileDetail.js` + monkey-patch `render` 的侵入做法。无订阅者时 no-op、行为不变。
+
 ## 计划提供（后续）
-- `rank`（群排行）+ 埋 hook 点 `profile:beforeRender`(供 ark 非侵入订阅,替代 `#ark替换文件`),见主仓 `docs/refactor-progress.md`。
+- `rank`（群排行）能力;ark 迁到 `profile:beforeRender` 订阅后删除其覆盖文件(见主仓 ADR-004 退场清单)。
