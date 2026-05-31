@@ -15,8 +15,8 @@ export const manifest = {
   provides: ["gameData"],
   // 依赖:account(genshin 已提供)、renderer(框架统一出图,待实现)
   requires: ["account", "renderer"],
-  // 后续埋的 hook 点(profile:beforeRender 供 ark 订阅),待实现后填充
-  hooks: [],
+  // 发布的 hook 点:面板渲染前(供 ark 等订阅注入排名,取代覆盖文件)
+  hooks: ["profile:beforeRender"],
   guoba: true,
 }
 

@@ -254,6 +254,16 @@ let ProfileDetail = {
       wCfg,
       changeProfile: e._profileMsg
     }
+    // chapter2 重构：渲染前发布 hook（异步等待），订阅者(如 ark)就地改写 renderData
+    // 注入全服排名/评分等 → 取代"覆盖 ProfileDetail.js + monkey-patch render"的侵入做法。
+    // 无订阅者时为 no-op、行为完全不变（非侵入）。详见主仓 ADR-004 退场清单。
+    if (globalThis.Bot?.core?.hook) {
+      try {
+        await Bot.core.hook.emitAsync('profile:beforeRender', { e, char, uid, game, mode, renderData })
+      } catch (err) {
+        logger?.warn?.(`[hook] profile:beforeRender 异常：${err?.message}`)
+      }
+    }
     // 渲染图像
     const msgRes = await e.reply([await Common.render('character/profile-detail', renderData, { e, scale: 1.6, retType: 'base64' }), new Button(e).profile(char, uid)])
     if (msgRes) {
