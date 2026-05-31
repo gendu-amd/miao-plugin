@@ -1,5 +1,8 @@
 import { Data, Version } from '#miao'
 import Index from './tools/index.js'
+// chapter2(P2)/1-05：向 L1 契约层注册 gameData 能力 + 声明 manifest（副作用 import，非侵入）
+import './models/gameDataPort.js'
+import './manifest.js'
 
 if (!global.segment)
   global.segment = (await import('oicq')).segment
