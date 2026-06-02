@@ -28,13 +28,5 @@ const gameDataPort = {
   },
 }
 
-try {
-  if (globalThis.Bot?.core?.provide) {
-    Bot.core.provide("gameData", gameDataPort)
-    logger?.mark?.("[contracts] miao 提供能力：gameData")
-  }
-} catch (err) {
-  logger?.warn?.(`[contracts] 注册 gameData 失败：${err?.message}`)
-}
-
+// ADR-007：注册由框架据 manifest.provides 自动完成,此处只导出实现。
 export default gameDataPort

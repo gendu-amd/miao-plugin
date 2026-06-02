@@ -36,13 +36,5 @@ const rankPort = {
   getUserUidMap: (e, game = "gs") => ProfileRank.getUserUidMap(e, game),
 }
 
-try {
-  if (globalThis.Bot?.core?.provide) {
-    Bot.core.provide("rank", rankPort)
-    logger?.mark?.("[contracts] miao 提供能力：rank（群排行）")
-  }
-} catch (err) {
-  logger?.warn?.(`[contracts] 注册 rank 失败：${err?.message}`)
-}
-
+// ADR-007：注册由框架据 manifest.provides 自动完成,此处只导出实现。
 export default rankPort

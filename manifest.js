@@ -11,23 +11,16 @@ export const manifest = {
   name: "miao",
   version: Version?.version ?? "0.0.0",
   type: "data-provider",
-  // 已提供(见 models/gameDataPort.js、models/rankPort.js)
-  provides: ["gameData", "rank"],
-  // 依赖:account(genshin 已提供)、renderer(框架统一出图,待实现)
+  // ADR-007：{能力名: importer},框架 wireManifests 自动 core.provide(免手写样板)
+  provides: {
+    gameData: () => import("./models/gameDataPort.js"),
+    rank: () => import("./models/rankPort.js"),
+  },
+  // 依赖:account(genshin 已提供)、renderer(框架已提供)
   requires: ["account", "renderer"],
   // 发布的 hook 点:面板渲染前(供 ark 等订阅注入排名,取代覆盖文件)
   hooks: ["profile:beforeRender"],
   guoba: true,
-}
-
-try {
-  const reg = globalThis.Bot?.core?.require?.("pluginRegistry")
-  if (reg) {
-    reg.register(manifest)
-    logger?.mark?.("[contracts] miao 声明 manifest：provides=[gameData, rank] requires=[account, renderer]")
-  }
-} catch (err) {
-  logger?.warn?.(`[contracts] 注册 miao manifest 失败：${err?.message}`)
 }
 
 export default manifest
