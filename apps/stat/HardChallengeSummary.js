@@ -34,6 +34,11 @@ export async function HardChallengeSummary (e) {
     hardChallengePopularity = await mys.getHardChallengePopularity()
 
     lvs = Data.getVal(hardChallenge, queryKey)
+    // 接口失败/无数据时 lvs 为 undefined，提前返回，避免下方 lvs.single/lvs.best 崩溃
+    if (!lvs) {
+      if (isMatch) e.reply(`暂未获取到${periodText}幽境危战数据，请确认已绑定ck且米游社接口可访问`)
+      return true
+    }
     // 检查是否查询到了幽境危战信息
     // 查询结果是一个长度为 2 的数组，是本期和上期的数据
     // 有单人挑战的 single，有多人挑战的 mp
