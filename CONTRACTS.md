@@ -18,11 +18,6 @@
   | `resolveName(name, game="gs")` | 别名→标准名,如 `resolveName("雷神")→"雷电将军"`;取不到→原值 |
 - 性质:**非侵入新增**——仅在现有 `#miao.models` 之上包一层 `core` 通道;miao 内部调用全保留。消费方(genshin/xiaoyao)可逐步改用 `Bot.core.require("gameData")` 替代 `file://` 直 import。
 
-## 插件清单（manifest） — chapter1-05
-- 实现:`manifest.js`(自注册到 `pluginRegistry`)。
-- 声明:`provides=[gameData]`、`requires=[account, renderer]`、`type=data-provider`、`guoba=true`。
-- 依赖体检(`pluginRegistry.checkRequires`):`account` 由 genshin 满足;`renderer` 待框架实现 → 当前 `checkRequires` 报 `{miao:[renderer]}`(缺失运行时由 `require()→null` 降级)。
-
 ### `rank`（群排行 RankProvider） — chapter2/P2（2026-05-31）
 - 实现:`models/rankPort.js`(工厂式包 `models/ProfileRank.js`),注册于 `index.js`。
 - 获取:`const rank = Bot.core.require("rank")`。
