@@ -36,5 +36,10 @@ const rankPort = {
   getUserUidMap: (e, game = "gs") => ProfileRank.getUserUidMap(e, game),
 }
 
-// ADR-007：注册由框架据 manifest.provides 自动完成,此处只导出实现。
+try {
+  globalThis.Bot?.core?.provide?.("rank", rankPort)
+} catch (err) {
+  logger?.warn?.(`[contracts] 注册 rank 失败:${err?.message}`)
+}
+
 export default rankPort

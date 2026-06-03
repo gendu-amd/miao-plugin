@@ -1,7 +1,8 @@
 import { Data, Version } from '#miao'
 import Index from './tools/index.js'
-// ADR-007 统一装配：gameData/rank 能力注册 + manifest 声明由框架 wireManifests() 据 manifest.js
-// 自动完成,不再手写副作用 import(*Port.js 仅导出实现)。
+// 向 L1 契约层注册能力(副作用 import,provider 自注册):gameData/rank。
+import './models/gameDataPort.js'
+import './models/rankPort.js'
 
 if (!global.segment)
   global.segment = (await import('oicq')).segment
