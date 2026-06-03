@@ -207,7 +207,7 @@ class Character extends Base {
     let ids = Meta.getIds(game, 'char')
     lodash.forEach(ids, (id) => {
       let char = Character.get(id)
-      if (char.game !== 'gs') {
+      if (char.game !== game) {
         return true
       }
       if (type === 'release' && !char.isRelease) {

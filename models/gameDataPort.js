@@ -1,17 +1,10 @@
 /**
- * GameData 实现（chapter2 · P2）
- *
- * 把 miao 的角色/武器/圣遗物/画像模型包装成 L1 契约层的 `gameData` 能力,
- * 注册到 `Bot.core.provide('gameData', …)`。供 genshin/xiaoyao 等按接口取"图标/别名/元数据",
- * 不再 `file://` 直 import miao 内部文件。
- *
- * 非侵入:仅"新增" core 通道;miao 现有 `#miao.models` 调用全部保留。
+ * `gameData` 能力实现 —— 把 miao 的角色/武器/圣遗物/画像模型暴露成契约方法,供 genshin/xiaoyao 等
+ * 按接口取"图标/别名/元数据",不再 `file://` 直 import miao 内部文件;miao 现有调用全部保留。
  */
 import { Character, Weapon, ArtifactSet, Player } from "#miao.models"
 
 const gameDataPort = {
-  meta: { provider: "miao", since: "P2" },
-
   /** 按名/别名/ID 取角色元数据(含别名解析);取不到→null。game: gs|sr */
   getCharacter: (name, game = "gs") => Character.get(name, game) || null,
   /** 取武器元数据;取不到→null */

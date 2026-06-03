@@ -136,7 +136,7 @@ class Attr extends Base {
       }
     }
 
-    let charBuffs = char.getCalcRule()
+    let charBuffs = char.getCalcRule() || {}
     lodash.forEach(charBuffs.buffs, (buff) => {
       if (!buff.isStatic) {
         return true

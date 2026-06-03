@@ -8,6 +8,9 @@ let cfgMap = {
   game: 'gs',
   async init (game = 'gs') {
     this.game = game
+    // 每次 init 重建 char（否则 sr 的项会并入 gs 的同一对象，且 {...cfgMap} 浅拷贝共享同一引用，
+    // 导致 cfgMapGs.char === cfgMapSr.char、gs/sr 配置混用）
+    this.char = {}
     let chars = fs.readdirSync(`${miaoPath}/resources/meta-${game}/character`)
     for (let char of chars) {
       cfgMap.char[char] = {}
@@ -48,7 +51,8 @@ let cfgMapSr = { ...cfgMap }
 let CharCfg = {
   // 获取角色伤害计算相关配置
   getCalcRule (char) {
-    let cfg = cfgMap.char[char.isTraveler ? `旅行者/${char.elem}` : char.name]?.calc
+    let map = char.game === 'sr' ? cfgMapSr : cfgMapGs
+    let cfg = map.char[char.isTraveler ? `旅行者/${char.elem}` : char.name]?.calc
     if (!cfg || lodash.isEmpty(cfg)) {
       return false
     }

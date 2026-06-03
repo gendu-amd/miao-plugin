@@ -259,7 +259,7 @@ let ProfileDetail = {
     // 无订阅者时为 no-op、行为完全不变（非侵入）。详见主仓 ADR-004 退场清单。
     if (globalThis.Bot?.core?.hook) {
       try {
-        await Bot.core.hook.emitAsync('profile:beforeRender', { e, char, uid, game, mode, renderData })
+        await Bot.core.hook.emit('profile:beforeRender', { e, char, uid, game, mode, renderData })
       } catch (err) {
         logger?.warn?.(`[hook] profile:beforeRender 异常：${err?.message}`)
       }
